@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Una propuesta especial para ti 💜</title>
+  <style>
+    :root {
+      --lila-base: #c8a2c8;
+      --lila-pastel: #e6e6fa;
+      --lila-oscuro: #8a2be2;
+      --lila-profundo: #4a2e5a;
+      --lila-suave: #f3e8ff;
+      --lila-brillante: #b388ff;
+      --blanco: #ffffff;
+      --verde-tallo: #689f38;
+      --verde-hoja: #8bc34a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--lila-suave) 0%, var(--lila-pastel) 50%, #ecd9fa 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* ===================================================
+       DECORACIÓN DE TULIPANES LILAS EN TODA LA PÁGINA (CSS)
+       =================================================== */
+
+    .tulip-decorations {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .corner-tulips {
+      position: absolute;
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    .corner-top-left {
+      top: -15px;
+      left: -10px;
+      transform: rotate(135deg);
+    }
+
+    .corner-top-right {
+      top: -15px;
+      right: -10px;
+      transform: rotate(-135deg);
+    }
+
+    .corner-bottom-left {
+      bottom: -15px;
+      left: -10px;
+      transform: rotate(45deg);
+    }
+
+    .corner-bottom-right {
+      bottom: -15px;
+      right: -10px;
+      transform: rotate(-45deg);
+    }
+
+    .side-tulips-left {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      opacity: 0.85;
+    }
+
+    .side-tulips-right {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      opacity: 0.85;
+    }
+
+    .floating-petals {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .petal {
+      position: absolute;
+      background: var(--lila-base);
+      border-radius: 15px 0 15px 0;
+      opacity: 0.4;
+      animation: floatPetal 12s infinite linear;
+    }
+
+    .petal:nth-child(1) { width: 18px; height: 18px; left: 10%; animation-duration: 10s; animation-delay: 0s; }
+    .petal:nth-child(2) { width: 22px; height: 22px; left: 30%; animation-duration: 14s; animation-delay: 2s; }
+    .petal:nth-child(3) { width: 16px; height: 16px; left: 70%; animation-duration: 11s; animation-delay: 4s; }
+    .petal:nth-child(4) { width: 20px; height: 20px; left: 85%; animation-duration: 13s; animation-delay: 1s; }
+
+    @keyframes floatPetal {
+      0% { top: -10%; transform: rotate(0deg) translateX(0); }
+      100% { top: 110%; transform: rotate(360deg) translateX(50px); }
+    }
+
+    /* COMPONENTE TULIPÁN CSS */
+    .tulip {
+      position: relative;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .tulip-head {
+      width: 32px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--lila-base), var(--lila-brillante));
+      border-radius: 0 0 20px 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .tulip-head::before, .tulip-head::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 18px;
+      height: 34px;
+      background: var(--lila-oscuro);
+      border-radius: 20px 20px 0 0;
+      opacity: 0.85;
+    }
+
+    .tulip-head::before {
+      left: -3px;
+      transform: rotate(-12deg);
+    }
+
+    .tulip-head::after {
+      right: -3px;
+      transform: rotate(12deg);
+    }
+
+    .stem {
+      width: 5px;
+      height: 55px;
+      background: linear-gradient(to bottom, var(--verde-hoja), var(--verde-tallo));
+      border-radius: 3px;
+    }
+
+    .leaf {
+      position: absolute;
+      width: 16px;
+      height: 32px;
+      background: var(--verde-tallo);
+      border-radius: 0 20px;
+      bottom: 10px;
+      left: 2px;
+      transform: rotate(-35deg);
+    }
+
+    .leaf-right {
+      position: absolute;
+      width: 16px;
+      height: 32px;
+      background: var(--verde-tallo);
+      border-radius: 20px 0;
+      bottom: 15px;
+      right: 2px;
+      transform: rotate(35deg);
+    }
+
+    .tulip-dark .tulip-head {
+      background: linear-gradient(135deg, #a855f7, #7e22ce);
+    }
+    .tulip-light .tulip-head {
+      background: linear-gradient(135deg, #e9d5ff, #c084fc);
+    }
+
+    /* ===================================================
+       TARJETA PRINCIPAL Y CONTENIDO
+       =================================================== */
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      padding: 35px 28px;
+      border-radius: 24px;
+      box-shadow: 0 15px 35px rgba(138, 43, 226, 0.2), 0 0 0 2px var(--lila-base);
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .card-tulip-border {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .card-tulip-border .tulip {
+      transform: scale(0.7);
+    }
+
+    .step {
+      display: none;
+      animation: fadeIn 0.5s ease-in-out forwards;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      color: var(--lila-profundo);
+      margin-bottom: 18px;
+      font-size: 1.35rem;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    p {
+      color: var(--lila-profundo);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      color: var(--lila-profundo);
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 0.92rem;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid var(--lila-base);
+      border-radius: 12px;
+      outline: none;
+      font-size: 1rem;
+      background-color: #faf7ff;
+      color: var(--lila-profundo);
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      border-color: var(--lila-oscuro);
+      box-shadow: 0 0 8px rgba(138, 43, 226, 0.25);
+    }
+
+    .btn {
+      background: linear-gradient(135deg, var(--lila-base), var(--lila-oscuro));
+      color: var(--blanco);
+      border: none;
+      padding: 13px 26px;
+      font-size: 1.02rem;
+      font-weight: 700;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
+      transition: all 0.3s ease;
+      margin: 8px 5px;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 8px 20px rgba(138, 43, 226, 0.4);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #a097a8, #7a7082);
+    }
+
+    .btn-secondary:hover {
+      background: linear-gradient(135deg, #8c8294, #665c6e);
+    }
+
+    .error-msg {
+      color: #dc2626;
+      font-size: 0.88rem;
+      margin-top: 10px;
+      display: none;
+      font-weight: 600;
+    }
+
+    .stitch-gif {
+      width: 180px;
+      height: 180px;
+      max-width: 100%;
+      object-fit: contain;
+      margin: 10px auto 18px;
+      display: block;
+      border-radius: 16px;
+    }
+
+    .bouquet {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      height: 130px;
+      margin: 15px 0 20px;
+      gap: 12px;
+    }
+
+    .bouquet .tulip:nth-child(1) { transform: rotate(-12deg); }
+    .bouquet .tulip:nth-child(2) { transform: scale(1.2) translateY(-10px); z-index: 2; }
+    .bouquet .tulip:nth-child(3) { transform: rotate(12deg); }
+    .bouquet .tulip:nth-child(4) { transform: scale(0.9) rotate(-22deg) translateY(5px); }
+    .bouquet .tulip:nth-child(5) { transform: scale(0.9) rotate(22deg) translateY(5px); }
+
+    /* ===================================================
+       AJUSTES RESPONSIVOS (DISPOSITIVOS MÓVILES Y TABLETS)
+       =================================================== */
+
+    @media (max-width: 600px) {
+      body {
+        padding: 12px;
+      }
+
+      .card {
+        padding: 24px 18px;
+        border-radius: 20px;
+      }
+
+      h2 {
+        font-size: 1.18rem;
+        margin-bottom: 14px;
+      }
+
+      p {
+        font-size: 0.98rem;
+        margin-bottom: 18px;
+      }
+
+      .stitch-gif {
+        width: 150px;
+        height: 150px;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 280px;
+        padding: 12px 20px;
+        font-size: 0.95rem;
+        margin: 6px auto;
+      }
+
+      .side-tulips-left,
+      .side-tulips-right {
+        display: none;
+      }
+
+      .corner-tulips {
+        transform: scale(0.65);
+      }
+
+      .corner-top-left { top: -20px; left: -20px; }
+      .corner-top-right { top: -20px; right: -20px; }
+      .corner-bottom-left { bottom: -20px; left: -20px; }
+      .corner-bottom-right { bottom: -20px; right: -20px; }
+
+      .bouquet {
+        height: 110px;
+        gap: 6px;
+      }
+
+      .bouquet .tulip {
+        transform: scale(0.85);
+      }
+    }
+
+    @media (max-height: 650px) {
+      body {
+        align-items: flex-start;
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+
+      .stitch-gif {
+        width: 130px;
+        height: 130px;
+        margin-bottom: 10px;
+      }
+
+      .card {
+        padding: 20px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="tulip-decorations">
+    <div class="floating-petals">
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+    </div>
+
+    <div class="corner-tulips corner-top-left">
+      <div class="tulip"><div class="tulip-head"></div><div class="stem"><div class="leaf"></div></div></div>
+      <div class="tulip tulip-light"><div class="tulip-head"></div><div class="stem"><div class="leaf"></div></div></div>
+    </div>
+
+    <div class="corner-tulips corner-top-right">
+      <div class="tulip tulip-dark"><div class="tulip-head"></div><div class="stem"><div class="leaf"></div></div></div>
+      <div class="tulip"><div class="tulip-head"></div><div class="stem"><div class="leaf"></div></div></div>
+    </div>
+
+    <div class="corner-tulips corner-bottom-left">
+      <div class="tulip"><div class="tulip-head"></div><div class="stem"><div class="leaf"></div></div></div>
+      <div class="tulip tulip-dark"><div class="tulip-head"></div><div class="stem"><div class="leaf"></div></div></div>
+    </div>
+
+    <div class="corner-tulips corner-bottom-right">
+      <div class="tulip tulip-light"><div class="tulip-head"></div><div class="stem"><div class="leaf"></div></div></div>
+      <div class="tulip"><div class="tulip-head"></div><div class="stem"><div class="leaf"></div></div></div>
+    </div>
+
+    <div class="side-tulips-left">
+      <div class="tulip tulip-light"><div class="tulip-head"></div><div class="stem"><div class="leaf"></div></div></div>
+      <div class="tulip"><div class="tulip-head"></div><div class="stem"><div class="leaf"></div></div></div>
+    </div>
+
+    <div class="side-tulips-right">
+      <div class="tulip"><div class="tulip-head"></div><div class="stem"><div class="leaf"></div></div></div>
+      <div class="tulip tulip-dark"><div class="tulip-head"></div><div class="stem"><div class="leaf"></div></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    
+    <div class="card-tulip-border">
+      <div class="tulip tulip-light"><div class="tulip-head"></div></div>
+      <div class="tulip"><div class="tulip-head"></div></div>
+      <div class="tulip tulip-dark"><div class="tulip-head"></div></div>
+    </div>
+
+    <div id="step-login" class="step active">
+      <h2>Inicia Sesión 💜</h2>
+      <div class="input-group">
+        <label for="username">Usuario:</label>
+        <input type="text" id="username" placeholder="Ingresa tu usuario">
+      </div>
+      <div class="input-group">
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" placeholder="Ingresa tu contraseña">
+      </div>
+      <button class="btn" onclick="checkLogin()">Ingresar</button>
+      <p id="login-error" class="error-msg">Usuario o contraseña incorrectos 😊</p>
+    </div>
+
+    <!-- Única pantalla de pregunta -->
+    <div id="step-question-single" class="step">
+      <img class="stitch-gif" src="https://i.pinimg.com/originals/a4/c4/7d/a4c47d0fd9bfa16b96f1c6c285d50331.gif" alt="Stitch pensando">
+      <p>Te preguntarás ¿por qué tu nombre es el usuario y la contraseña?</p>
+      <button class="btn" onclick="goToStep('step-pass-msg')">Continuar</button>
+    </div>
+
+    <!-- Pantalla de explicación -->
+    <div id="step-pass-msg" class="step">
+      <img class="stitch-gif" src="https://media.tenor.com/4WBxPZwXYB0AAAAM/i-love-you.gif" alt="Stitch con corazón">
+      <p>Y la respuesta es sencilla porque al igual que mi corazón, tú eres la contraseña para entrar en él. 😊</p>
+      <button class="btn" onclick="goToStep('step-proposal-intro')">Continuar</button>
+    </div>
+
+    <div id="step-proposal-intro" class="step">
+      <img class="stitch-gif" src="https://www.icegif.com/wp-content/uploads/2023/11/icegif-73.gif" alt="Stitch guiñando el ojo">
+      <p>Tengo una propuesta para ti...</p>
+      <button class="btn" onclick="goToStep('step-question')">Continuar</button>
+    </div>
+
+    <div id="step-question" class="step">
+      <img class="stitch-gif" src="https://i.pinimg.com/originals/e6/63/18/e6631832c5ff0ac2077b8dbeeac666fb.gif" alt="Stitch entusiasmado">
+      <h2>¿Me aceptas una salida por un café este viernes por la tarde?</h2>
+      <div>
+        <button class="btn" onclick="goToStep('step-accepted')">Sí, está bien</button>
+        <button id="btn-no" class="btn btn-secondary" onclick="handleNoClick()">No, no puedo</button>
+      </div>
+    </div>
+
+    <div id="step-accepted" class="step">
+      <img class="stitch-gif" src="https://i.pinimg.com/originals/36/08/e0/3608e05c00a7430ff25d2bfcaa4e42b1.gif" alt="Stitch feliz bailando">
+      <h2>MUY BIEN ENTONCES NOS VEMOS EN ESE MOMENTO😊</h2>
+      <button class="btn" onclick="goToStep('step-gift')">Continuar</button>
+    </div>
+
+    <div id="step-declined" class="step">
+      <img class="stitch-gif" src="https://i.pinimg.com/originals/d5/fb/83/d5fb83e26bfd4ec440abaec15bdc0f21.gif" alt="Stitch penoso">
+      <h2>Bueno está bien en una próxima podrá ser 🥺 😊</h2>
+      <button class="btn" onclick="goToStep('step-gift')">Continuar</button>
+    </div>
+
+    <div id="step-gift" class="step">
+      <img class="stitch-gif" src="https://i.pinimg.com/originals/6d/49/d6/6d49d63aa7059e373b77951123d50b43.gif" alt="Stitch tierno">
+      <p>Tengo algo para ti </p>
+      <button class="btn" onclick="goToStep('step-sweet-msg')">Ver</button>
+    </div>
+
+    <div id="step-sweet-msg" class="step">
+      <img class="stitch-gif" src="https://i.pinimg.com/originals/43/ae/b6/43aeb66e180696bd0e32a7c148d82eb8.gif" alt="Stitch cariñoso">
+      <p>Eres una gran personita, quiero que sepas que pasar tiempo contigo es lo mejor que puedo vivir en mi día a día 😊🫶🏻</p>
+      <button class="btn" onclick="goToStep('step-final')">Continuar</button>
+    </div>
+
+    <div id="step-final" class="step">
+      <div class="bouquet">
+        <div class="tulip tulip-light"><div class="tulip-head"></div><div class="stem"><div class="leaf"></div></div></div>
+        <div class="tulip"><div class="tulip-head"></div><div class="stem"><div class="leaf"></div><div class="leaf-right"></div></div></div>
+        <div class="tulip tulip-dark"><div class="tulip-head"></div><div class="stem"><div class="leaf-right"></div></div></div>
+        <div class="tulip"><div class="tulip-head"></div><div class="stem"></div></div>
+        <div class="tulip tulip-light"><div class="tulip-head"></div><div class="stem"></div></div>
+      </div>
+
+      <img class="stitch-gif" src="https://media.tenor.com/Rv3x7_Mlj1kAAAAj/stich-beso.gif" alt="Stitch sosteniendo corazón">
+      <p>Unas florecitas virtuales para ti, te quiero mucho 😊💗</p>
+    </div>
+
+  </div>
+
+  <script>
+    let noClickCount = 0;
+
+    function checkLogin() {
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+      const errorMsg = document.getElementById('login-error');
+
+      if (user.toLowerCase() === 'jorge' && pass.toLowerCase() === 'ilse') {
+        errorMsg.style.display = 'none';
+        goToStep('step-question-single');
+      } else {
+        errorMsg.style.display = 'block';
+      }
+    }
+
+    function goToStep(stepId) {
+      const steps = document.querySelectorAll('.step');
+      steps.forEach(step => step.classList.remove('active'));
+      document.getElementById(stepId).classList.add('active');
+    }
+
+    function handleNoClick() {
+      noClickCount++;
+      if (noClickCount >= 10) {
+        goToStep('step-declined');
+      }
+    }
+  </script>
+</body>
+</html>
